@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block metacontent %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block content %}
+    <h1>Hello, {{ current_user.username }}!</h1>
+
+    <!-- <form method="post" action='/index'>
+        <input type="text" name="title">
+        <input type="submit" value="Add">
+    </form> -->
+
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+        <p>
+            {{ form.title.label }}<br>
+            {{ form.title(size=32) }}
+            {% for error in form.title.errors %}
+            <span style="color:red;">[{{error}}]</span>
+            {% endfor %}
+        </p>
+        <p>{{ form.submit() }}</p>
+    </form>
+
+    {% for wordlist in wordlists %}
+    <div>
+        <p>{{ current_user.username }} added a new wordlist: <a href="/index/{{wordlist.id}}"><b>{{ wordlist.title }}</b></a></p>
+        <a href="/edit/{{wordlist.id}}"><i class="fa fa-pencil"></i></a>
+        <form action="{{url_for('delete_wordlist', wordlist_id=wordlist.id)}}", method="POST">
+            <input type="hidden" name="_method" value="DELETE">
+            <button type="submit"><i class="fa fa-trash-o"></i></button>
+        </form>
+    </div>
+    {% endfor %}
+{% endblock %}

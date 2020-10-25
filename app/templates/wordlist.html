@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block metacontent %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+{% endblock %}
+
+{% block content %}
+    <h1>Current wordlist is:</h1>
+    <h3>{{ wordlist.title }}</h3>
+    {% for word in wl_words %}
+    <h4>{{ word }}</h4>
+
+    <form action="{{url_for('delete_word', word_id=word.id)}}", method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+        <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+    </form>
+
+    <p>Part of speech: {{ word.part }}</p>
+    <p>Definition: {{ word.definition }}</p>
+    {% endfor %}
+    <p>The current learner is: {{ wordlist.learner }}</p>
+
+{% endblock %}

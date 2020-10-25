@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<form action="{{ url_for('search') }}">
+    
+    <div class="search-container">
+        <h1 id="search-head">Search for Word</h1>
+        <input type="text" name="search-word" id="search-value" >
+        <button type="button" class="search-button">Search</button>
+        <button type="button" id="clear">Clear</button>
+    </div>
+
+    <select name="my_wordlist" id="my_wordlist">
+        {% for collection in wordlist_collection %}
+        <option value= "{{collection.id}}" SELECTED>{{collection.title}}</option>"
+        {% endfor %}
+    </select>
+    <!-- <input type="submit" value="Add"> -->
+    <button type="submit" id="add-button" onclick="submit_message();">Add to Collection</button>
+
+</form>
+
+    <div class="search-results">
+        <!-- This is where the search results will go -->
+    </div>
+
+
+<!-- Start of JS file -->
+<script src="{{url_for('static', filename='vocabulary.js')}}"></script>
+
+<!-- <script>
+    let searchButton = document.getElementsByClassName('search-button')[0]
+    searchButton.addEventListener('click', addTitleToUrl)
+
+    let clearButton = document.getElementById("clear")
+    clearButton.addEventListener('click', clearInput)
+
+    let addButton = document.getElementById('add-button')
+    addButton.disabled = true
+
+    function clearInput() {
+        document.getElementById('search-value').value = ''
+    }
+
+    function addTitleToUrl() {
+    let searchContainer = document.getElementsByClassName('search-results')[0]
+    searchContainer.innerHTML = ''
+    let searchValue = document.getElementById('search-value').value
+    fetch(`https://dictionaryapi.com/api/v3/references/collegiate/json/${searchValue}?key=a1728eb8-5084-424d-b80f-ceb91b3fe715`)
+    .then(response => response.json())
+    .then(data => {
+        try {
+            let word = data[0]["meta"]["id"]
+            console.log("word I am searching for: " + word)
+            let type = data[0]["fl"]
+            console.log("type: " + type)
+            let definition = data[0]["shortdef"]
+            console.log("shoft definition in a list: " + definition)
+            let div = document.createElement('div')
+            div.setAttribute('id', 'word-container')
+            let wordContents = `
+                <h3 id="word-name">${word}</h3>
+                <p id="word-type">${type}</p>
+                <p id="word-definition">${definition}</p>
+                `
+            div.innerHTML = wordContents
+            searchContainer.appendChild(div)
+            addButton.disabled = false;
+        }
+        catch(err) {
+            let errorHead = document.createElement('h3')
+            errorHead.innerHTML = "This word does not exist. Did you mean:"
+            searchContainer.append(errorHead)
+            for (let i = 0; i < data.length; i ++) {
+                let suggestP = document.createElement('p')
+                suggestP.innerHTML = data[i]
+                searchContainer.append(suggestP)
+            }
+            addButton.disabled = true  
+            console.log("Your word or other suggestions " + data)
+        }
+      })
+    }
+</script> -->
+
+<script src="{{url_for('static', filename='add_json.js')}}"></script>
+
+<!-- //     function submit_message() {
+
+//         var wordName = document.getElementById("search-value")
+//         var wordType = document.getElementById("word-type")
+//         var wordDefinition = document.getElementById("word-definition")
+//         var a = document.getElementById("my_wordlist")
+
+//         var entry = {
+//             name: wordName.value, 
+//             type: wordType.innerHTML,
+//             definition: wordDefinition.innerHTML,
+//             selected_wordlist: a.options[a.selectedIndex].value
+//         };
+
+//     fetch(`${window.origin}/search`, {
+//     method: "POST",
+//     credentials: "include",
+//     body: JSON.stringify(entry),
+//     cache: "no-cache",
+//     headers: new Headers({
+//       "content-type": "application/json"
+//     })
+//   })
+//   .then(function(response) {
+//     if (response.status !== 200) {
+//       console.log(`Looks like there was a problem. Status code: ${response.status}`);
+//       return;
+//     }
+//     response.json().then(function(data) {
+//       console.log(data);
+//     });
+//   })
+//   .catch(function(error) {
+//     console.log("Fetch error: " + error);
+//     });
+//     } -->
+
+
+<!-- <script type='type/javascript' src="{{url_for('static', filename='static/js/vocabulary.js')}}"></script> -->
+{% endblock %}
