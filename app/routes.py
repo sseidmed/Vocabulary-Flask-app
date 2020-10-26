@@ -11,6 +11,7 @@ from flask_login import login_required
 from app import db
 
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+app.config['SESSION_COOKIE_SECURE'] = False
 
 @app.route('/')
 @app.route('/index', methods=["GET", "POST"])

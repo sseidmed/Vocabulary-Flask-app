@@ -1,7 +1,25 @@
-h3 {
-    color: red;
+.login-form {
+    max-width: 30%;
+    background-color: rgb(211,211,211);
+    padding: 1% 2%;
+    margin: 5% auto;
+    box-shadow: inset 0 -3em 3em rgba(0,0,0,0.1), 0 0 0 2px rgb(255,255,255), 0.3em 0.3em 1em rgba(0,0,0,0.3)
 }
 
-h4 {
-    color: purple;
+.login-title {
+    text-align: center;
 }
+
+.current-wordlist {
+    display: inline;
+}
+
+.wordlist-info {
+    display: flex;
+    flex-direction: row;
+}
+
+.wordlist-item {
+    padding: 5px;
+}
+

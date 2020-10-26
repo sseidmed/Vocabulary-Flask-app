@@ -38,7 +38,7 @@ class Wordlist(db.Model):
 
 class Word(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String(64))
+    name=db.Column(db.String(64), unique=True)
     part=db.Column(db.String(64))
     definition=db.Column(db.String(128))
     wordlists = db.relationship('Wordlist', secondary=wordlist_word, backref='words', lazy= 'dynamic')
