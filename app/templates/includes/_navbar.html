@@ -13,18 +13,18 @@
             <a class="nav-link" href="{{ url_for('login') }}">Login</a>                                    
         </li>
         <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('login') }}">Register</a>
+            <a class="nav-link" href="{{ url_for('register') }}">Register</a>
         </li>
         {% else %}
         <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
         {% endif %}
       </ul>
-      {% if current_user.is_authenticated %}
+      <!-- {% if current_user.is_authenticated %}
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
-      {% endif %}
+      {% endif %} -->
     </div>
   </nav>
 

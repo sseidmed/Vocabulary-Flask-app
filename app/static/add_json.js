@@ -1,12 +1,12 @@
 function submit_message() {
 
-    var wordName = document.getElementById("search-value")
+    var wordName = document.getElementById("word-name")
     var wordType = document.getElementById("word-type")
     var wordDefinition = document.getElementById("word-definition")
     var a = document.getElementById("my_wordlist")
 
     var entry = {
-        name: wordName.value, 
+        name: wordName.innerHTML, 
         type: wordType.innerHTML,
         definition: wordDefinition.innerHTML,
         selected_wordlist: a.options[a.selectedIndex].value

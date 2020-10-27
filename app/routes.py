@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, jsonify, make_response
 from app import app
 from datetime import date
-from app.forms import LoginForm, EditWordlistForm, AddWordlistForm
+from app.forms import LoginForm, EditWordlistForm, AddWordlistForm, RegistrationForm
 from flask_login import current_user, login_user
 from app.models import User, Wordlist, Word
 from flask_login import logout_user, current_user, logout_user, login_required
@@ -45,6 +45,20 @@ def login():
         return redirect(url_for('index'))
     return render_template('login.html',title="Sign In", form=form)
 
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for('index'))
+    form = RegistrationForm()
+    if form.validate_on_submit():
+        user = User(username=form.username.data, email=form.email.data)
+        user.set_password(form.password.data)
+        db.session.add(user)
+        db.session.commit()
+        flash('Congratulations, you are now a registered user!')
+        return redirect(url_for('login'))
+    return render_template('register.html', title='Register', form=form)
+
 @app.route('/edit/<int:wordlist_id>', methods=['GET', 'POST'])
 @login_required
 def edit(wordlist_id):
@@ -78,6 +92,8 @@ def delete_wordlist(wordlist_id):
     wordlist=Wordlist.query.get_or_404(wordlist_id)
     if wordlist.learner != current_user:
         abort(403)
+    for ass in wordlist.words:
+        db.session.delete(ass)
     db.session.delete(wordlist)
     db.session.commit()
     flash("Wordlist deleted!", "success")
@@ -91,12 +107,6 @@ def search():
         return render_template("search.html", wordlist_collection=wordlist_collection)
     else:
         selected_wl=request.form.get('my_wordlist')
-        print("post method here")
-        #target_wl=Wordlist.query.get(int(selected_wl))
-        # print(target_wl)
-        # search_word=request.form.get('search-word')
-        # print("word that was searched", search_word)
-        # print("id of wordlist", int(selected_wl))
         req = request.get_json()
         print("my word attributes are:", req)
         print(req['name'])

@@ -26,6 +26,7 @@ fetch(`https://dictionaryapi.com/api/v3/references/collegiate/json/${searchValue
         console.log("type: " + type)
         let definition = data[0]["shortdef"]
         console.log("shoft definition in a list: " + definition)
+        console.log("Example test")
         let div = document.createElement('div')
         div.setAttribute('id', 'word-container')
         let wordContents = `
