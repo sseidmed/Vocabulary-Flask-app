@@ -15,3 +15,10 @@ login.login_view='login'
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+#sqlite does not support dropping or altering columns: www.sqlite.org/lang_altertable.html
+with app.app_context():
+    if db.engine.url.drivername == 'sqlite':
+        migrate.init_app(app, db, render_as_batch=True)
+    else:
+        migrate.init_app(app, db)

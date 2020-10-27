@@ -8,11 +8,6 @@
 {% block content %}
     <h1>Hello, {{ current_user.username }}!</h1>
 
-    <!-- <form method="post" action='/index'>
-        <input type="text" name="title">
-        <input type="submit" value="Add">
-    </form> -->
-
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
         <p>
@@ -26,13 +21,19 @@
     </form>
 
     {% for wordlist in wordlists %}
-    <div>
-        <p>{{ current_user.username }} added a new wordlist: <a href="/index/{{wordlist.id}}"><b>{{ wordlist.title }}</b></a></p>
-        <a href="/edit/{{wordlist.id}}"><i class="fa fa-pencil"></i></a>
-        <form action="{{url_for('delete_wordlist', wordlist_id=wordlist.id)}}", method="POST">
-            <input type="hidden" name="_method" value="DELETE">
-            <button type="submit"><i class="fa fa-trash-o"></i></button>
-        </form>
+    <div class="wordlist-info">
+        <div class="wordlist-item">
+            <p><a href="/index/{{wordlist.id}}"><b>{{ wordlist.title }}</b></a>
+        </div>
+        <div class="wordlist-item">
+            <a href="/edit/{{wordlist.id}}"><i class="fa fa-pencil"></i></a>
+        </div>
+        <div class="wordlist-item">
+            <form action="{{url_for('delete_wordlist', wordlist_id=wordlist.id)}}", method="POST">
+                <input type="hidden" name="_method" value="DELETE">
+                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');"><i class="fa fa-trash-o"></i></button>
+            </form>
+        </div>
     </div>
     {% endfor %}
 {% endblock %}

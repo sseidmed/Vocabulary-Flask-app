@@ -1,4 +1,4 @@
-
+console.log("connected!")
 let searchButton = document.getElementsByClassName('search-button')[0]
 searchButton.addEventListener('click', addTitleToUrl)
 
@@ -26,16 +26,38 @@ fetch(`https://dictionaryapi.com/api/v3/references/collegiate/json/${searchValue
         console.log("type: " + type)
         let definition = data[0]["shortdef"]
         console.log("shoft definition in a list: " + definition)
-        let div = document.createElement('div')
-        div.setAttribute('id', 'word-container')
-        let wordContents = `
-            <h3 id="word-name">${word}</h3>
-            <p id="word-type">${type}</p>
-            <p id="word-definition">${definition}</p>
-            `
-        div.innerHTML = wordContents
-        searchContainer.appendChild(div)
-        addButton.disabled = false;
+        let example = ''
+        let example2 = ''
+        try {
+            example1 = data[0]["def"]["0"]["sseq"]["0"]["0"]["1"]["dt"]["1"]["1"]["0"]["t"]
+            console.log("Example 1", example1)
+            // example2 = data[0]["def"]["0"]["sseq"]["1"]["0"]["1"]["dt"]["1"]["1"]["0"]["t"]
+            // console.log("Example 2", example2)
+            let div = document.createElement('div')
+            div.setAttribute('id', 'word-container')
+            let wordContents = `
+                <h3 id="word-name">${word}</h3>
+                <p id="word-type">${type}</p>
+                <p id="word-definition">${definition}</p>
+                <p id="example1">${example1}</p>
+                `
+                div.innerHTML = wordContents
+                searchContainer.appendChild(div)
+                addButton.disabled = false;
+        }
+        catch(err) {
+            console.log("No example sentences were found")
+            let div = document.createElement('div')
+            div.setAttribute('id', 'word-container')
+            let wordContents = `
+                <h3 id="word-name">${word}</h3>
+                <p id="word-type">${type}</p>
+                <p id="word-definition">${definition}</p>
+                `
+            div.innerHTML = wordContents
+            searchContainer.appendChild(div)
+            addButton.disabled = false;
+        }
     }
     catch(err) {
         let errorHead = document.createElement('h3')

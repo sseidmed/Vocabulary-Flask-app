@@ -28,7 +28,7 @@ class User(UserMixin, db.Model):
 
 class Wordlist(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    title=db.Column(db.String(64), index=True, unique=True)
+    title=db.Column(db.String(64), index=True, nullable=False)
     timestamp=db.Column(db.DateTime, index=True, default=datetime.utcnow)
     user_id=db.Column(db.Integer, db.ForeignKey('user.id'))
     
@@ -38,13 +38,14 @@ class Wordlist(db.Model):
 
 class Word(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    name=db.Column(db.String(64))
+    name=db.Column(db.String(64), index=True)
     part=db.Column(db.String(64))
     definition=db.Column(db.String(128))
+    example1=db.Column(db.String(128), nullable=True)
     wordlists = db.relationship('Wordlist', secondary=wordlist_word, backref='words', lazy= 'dynamic')
 
     def __repr__(self):
-        return 'Word name is: {}'.format(self.name)
+        return self.name
 
 @login.user_loader
 def load_user(id):
