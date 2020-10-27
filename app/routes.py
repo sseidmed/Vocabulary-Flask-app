@@ -115,7 +115,13 @@ def search():
         print(req['selected_wordlist'])
         wl = Wordlist.query.get(int(req['selected_wordlist']))
         print(wl)
-        w = Word(name=req['name'], part=req['type'], definition=req['definition'])
+        example1 = 'example1'
+        if example1 in req.keys(): 
+            print(req['example1'])
+            w = Word(name=req['name'], part=req['type'], definition=req['definition'], example1=req['example1'])
+        else:
+            print("key doesnt exist")
+            w = Word(name=req['name'], part=req['type'], definition=req['definition'])  
         wl.words.append(w)
         db.session.commit()
         return redirect(url_for("index"))

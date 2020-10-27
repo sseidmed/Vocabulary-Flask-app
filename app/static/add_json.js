@@ -1,16 +1,30 @@
+console.log("connected!")
 function submit_message() {
 
     var wordName = document.getElementById("word-name")
     var wordType = document.getElementById("word-type")
     var wordDefinition = document.getElementById("word-definition")
     var a = document.getElementById("my_wordlist")
+    var entry = {};
 
-    var entry = {
+    if(document.body.contains(document.getElementById('example1'))){
+      var example1 = document.getElementById("example1");
+      entry = {
         name: wordName.innerHTML, 
         type: wordType.innerHTML,
         definition: wordDefinition.innerHTML,
+        example1: example1.innerHTML,
         selected_wordlist: a.options[a.selectedIndex].value
     };
+  } else{
+          entry = {
+            name: wordName.innerHTML, 
+            type: wordType.innerHTML,
+            definition: wordDefinition.innerHTML,
+            selected_wordlist: a.options[a.selectedIndex].value
+        };
+  }
+
 
 fetch(`${window.origin}/search`, {
 method: "POST",

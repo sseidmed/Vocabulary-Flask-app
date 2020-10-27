@@ -41,6 +41,7 @@ class Word(db.Model):
     name=db.Column(db.String(64), index=True)
     part=db.Column(db.String(64))
     definition=db.Column(db.String(128))
+    example1=db.Column(db.String(128), nullable=True)
     wordlists = db.relationship('Wordlist', secondary=wordlist_word, backref='words', lazy= 'dynamic')
 
     def __repr__(self):
