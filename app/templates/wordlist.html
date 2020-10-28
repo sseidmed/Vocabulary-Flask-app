@@ -6,20 +6,27 @@
 {% endblock %}
 
 {% block content %}
-    <h1 class="current-wordlist">Current wordlist is:</h1>
-    <h3>{{ wordlist.title }}</h3>
-    {% for word in wl_words %}
-    <h4>{{ word }}</h4>
-
-    <form action="{{url_for('delete_word', word_id=word.id)}}", method="POST">
-        <input type="hidden" name="_method" value="DELETE">
-        <button type="submit" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
-    </form>
-
-    <p>Part of speech: {{ word.part }}</p>
-    <p>Definition: {{ word.definition }}</p>
-    <p>Example: {{ word.example1 }}</p>
-    {% endfor %}
     <p>The current learner is: {{ wordlist.learner }}</p>
+    <h3><strong>{{ wordlist.title }}</strong></h3>
+    <p class="created-date">Created on {{ wordlist.timestamp.date() }}</p>
+    {% for word in wl_words %}
+        <div class="word-card">
+            <div class="word-info">
+                <div class="word">
+                    <h4><strong> {{ word }}</strong></h4>
+                </div>
 
+                <div class="word">
+                    <form action="{{url_for('delete_word', word_id=word.id)}}", method="POST">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this word?')"><i class="fa fa-trash-o"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <p>Part of speech: <em>{{ word.part }}</em></p>
+            <p>Definition: {{ word.definition }}</p>
+            <p>Example: {{ word.example1 }}</p>
+        </div>
+    {% endfor %}
 {% endblock %}

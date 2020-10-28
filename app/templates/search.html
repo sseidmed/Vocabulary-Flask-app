@@ -6,23 +6,30 @@
     
     <div class="search-container">
         <h1 id="search-head">Search for Word</h1>
-        <input type="text" name="search-word" id="search-value" >
-        <button type="button" class="search-button">Search</button>
-        <button type="button" id="clear">Clear</button>
+        <input type="text" class="form-control" name="search-word" id="search-value" >
+        <button type="button" class="search-button btn btn-info">Search</button>
+        <button type="button" class="btn btn-warning" id="clear">Clear</button>
     </div>
-
-    <select name="my_wordlist" id="my_wordlist">
-        {% for collection in wordlist_collection %}
-        <option value= "{{collection.id}}" SELECTED>{{collection.title}}</option>"
-        {% endfor %}
-    </select>
-    <button type="submit" id="add-button" onclick="submit_message();">Add to Collection</button>
-
-</form>
 
     <div class="search-results">
         <!-- This is where the search results will go -->
     </div>
+
+    <div class="add-word">
+        <h4>Add this word to a wordlist below:</h4>
+        <select name="my_wordlist" id="my_wordlist" class="minimal">
+            {% for collection in wordlist_collection %}
+            <option value= "{{collection.id}}" SELECTED>{{collection.title}}</option>"
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-info" id="add-button" onclick="submit_message();">Add to Collection</button>
+    </div>
+
+    
+
+</form>
+
+
 
 
 <!-- Start of JS file -->
