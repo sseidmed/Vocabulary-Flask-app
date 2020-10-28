@@ -42,6 +42,7 @@ def login():
         next_page=request.args.get('next')
         if not next_page or url_parse(next_page).netloc != '':
             next_page=url_for('index')
+        flash('Welcome back!')
         return redirect(url_for('index'))
     return render_template('login.html',title="Sign In", form=form)
 
@@ -105,7 +106,7 @@ def search():
     if request.method == "GET":
         wordlist_collection = current_user.wordlists.all()
         return render_template("search.html", wordlist_collection=wordlist_collection)
-    else:
+    elif request.method == "POST":
         selected_wl=request.form.get('my_wordlist')
         req = request.get_json()
         print("my word attributes are:", req)
@@ -124,12 +125,16 @@ def search():
             w = Word(name=req['name'], part=req['type'], definition=req['definition'])  
         wl.words.append(w)
         db.session.commit()
+        flash("Word successfully added!")
         return redirect(url_for("index"))
 
 @app.route('/delete_word/<int:word_id>', methods=["GET", "POST"])
 @login_required
 def delete_word(word_id):
     word=Word.query.get_or_404(word_id)
+    wordlist = word.wordlists[0]
+    wordlist_id = wordlist.id 
+    print(wordlist_id)
     db.session.delete(word)
     db.session.commit()
     flash("Word deleted!", "success")
