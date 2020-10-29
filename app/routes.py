@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for, jsonify, make_response
 from app import app
 from datetime import date
-from app.forms import LoginForm, EditWordlistForm, AddWordlistForm, RegistrationForm
+from app.forms import LoginForm, EditWordlistForm, AddWordlistForm, RegistrationForm, EditProfileForm
 from flask_login import current_user, login_user
 from app.models import User, Wordlist, Word
 from flask_login import logout_user, current_user, logout_user, login_required
@@ -27,6 +27,33 @@ def index():
         return redirect(url_for('index'))
     wordlists = current_user.wordlists.all()
     return render_template('index.html',title='Home', wordlists=wordlists, form=form)
+
+@app.route('/user/<username>', methods=["GET", "POST"])
+@login_required
+def user(username):
+    user=User.query.filter_by(username=username).first_or_404()
+    return render_template("user.html", user=user)
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@login_required
+def edit_profile():
+    form=EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username=form.username.data
+        current_user.about_me=form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.')
+        return redirect(url_for('user', username=current_user.username))
+    elif request.method == 'GET':
+        form.username.data=current_user.username
+        form.about_me.data=current_user.about_me
+    return render_template('edit_profile.html', title='Edit Profile', form=form)
+
+@app.route('/index/<int:wordlist_id>')
+def wordlist(wordlist_id):
+    wordlist=Wordlist.query.get_or_404(wordlist_id)
+    words=wordlist.words
+    return render_template('wordlist.html', title=wordlist.title, wordlist=wordlist, words=words)
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -99,10 +126,10 @@ def delete_wordlist(wordlist_id):
     db.session.commit()
     flash("Wordlist deleted!", "success")
     return redirect(url_for('index'))
-   
+
 @app.route('/search', methods=["GET", "POST"])
 @login_required
-def search():
+def search_word():
     if request.method == "GET":
         wordlist_collection = current_user.wordlists.all()
         return render_template("search.html", wordlist_collection=wordlist_collection)
@@ -114,8 +141,8 @@ def search():
         print(req['type'])
         print(req['definition'])
         print(req['selected_wordlist'])
-        wl = Wordlist.query.get(int(req['selected_wordlist']))
-        print(wl)
+        wordlist = Wordlist.query.get_or_404(int(req['selected_wordlist']))
+        print(wordlist)
         example1 = 'example1'
         if example1 in req.keys(): 
             print(req['example1'])
@@ -123,22 +150,22 @@ def search():
         else:
             print("key doesnt exist")
             w = Word(name=req['name'], part=req['type'], definition=req['definition'])  
-        wl.words.append(w)
+        wordlist.words.append(w)
         db.session.commit()
         flash("Word successfully added!")
-        return redirect(url_for("index"))
+        return render_template("index.html")
 
-@app.route('/delete_word/<int:word_id>', methods=["GET", "POST"])
+
+
+@app.route('/index/<int:wordlist_id>/<int:word_id>/delete', methods=["POST"])
 @login_required
-def delete_word(word_id):
+def delete_word(word_id, wordlist_id):
     word=Word.query.get_or_404(word_id)
-    wordlist = word.wordlists[0]
-    wordlist_id = wordlist.id 
-    print(wordlist_id)
+    wordlist = Wordlist.query.get_or_404(wordlist_id)
     db.session.delete(word)
     db.session.commit()
     flash("Word deleted!", "success")
-    return redirect(url_for('index'))
+    return redirect(url_for('wordlist', wordlist_id=wordlist.id))
 
     
 @app.route('/logout')

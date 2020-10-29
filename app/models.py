@@ -15,6 +15,7 @@ class User(UserMixin, db.Model):
     username=db.Column(db.String(64), index=True, unique=True)
     email=db.Column(db.String(120), index=True, unique=True)
     password_hash=db.Column(db.String(128))
+    about_me=db.Column(db.String(140))
     wordlists=db.relationship('Wordlist', backref='learner', lazy='dynamic')
 
     def __repr__(self):

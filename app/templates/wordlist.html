@@ -7,9 +7,9 @@
 
 {% block content %}
     <p>The current learner is: {{ wordlist.learner }}</p>
-    <h3><strong>{{ wordlist.title }}</strong></h3>
+    <h3><strong>{{ title }}</strong></h3>
     <p class="created-date">Created on {{ wordlist.timestamp.date() }}</p>
-    {% for word in wl_words %}
+    {% for word in words %}
         <div class="word-card">
             <div class="word-info">
                 <div class="word">
@@ -17,7 +17,7 @@
                 </div>
 
                 <div class="word">
-                    <form action="{{url_for('delete_word', word_id=word.id)}}", method="POST">
+                    <form action="{{url_for('delete_word', wordlist_id=wordlist.id, word_id=word.id)}}", method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this word?')"><i class="fa fa-trash-o"></i></button>
                     </form>
