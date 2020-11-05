@@ -32,7 +32,10 @@ def index():
 @login_required
 def user(username):
     user=User.query.filter_by(username=username).first_or_404()
-    return render_template("user.html", user=user)
+    wl = user.wordlists.all()
+    length = len(wl)
+    print(length)
+    return render_template("user.html", user=user, length=length)
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @login_required
@@ -153,7 +156,7 @@ def search_word():
         wordlist.words.append(w)
         db.session.commit()
         flash("Word successfully added!")
-        return render_template("index.html")
+        return redirect(url_for("wordlist", wordlist_id=wordlist.id))
 
 
 

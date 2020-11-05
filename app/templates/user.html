@@ -13,5 +13,14 @@
     </tr>
 </table>
     <hr>
+    {% if length > 0: %}
+        <p>You have {{ length }} wordlist(s)</p>
+    {% else %}
+        <p>You don't have any wordlists</p>
+    {% endif %}
+
+    <a href="{{ url_for('index') }}"><button type="button" class="btn btn-info">Create a wordlist</button></a>
+
+    
 
 {% endblock %}
